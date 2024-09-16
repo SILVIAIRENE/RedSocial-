@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Solicitudes de Amistad</h2>
+    {% if solicitudes %}
+        <ul class="list-group">
+            {% for solicitud in solicitudes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ solicitud.solicitante.nombre_usuario }}
+                    <div>
+                        <form method="post" action="{% url 'aceptar_solicitud' solicitud_id=solicitud.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Aceptar</button>
+                        </form>
+                        <form method="post" action="{% url 'rechazar_solicitud' solicitud_id=solicitud.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes solicitudes de amistad pendientes.</p>
+    {% endif %}
+</div>
+{% endblock %}

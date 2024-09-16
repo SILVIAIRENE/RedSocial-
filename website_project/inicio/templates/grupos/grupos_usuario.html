@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Mis Grupos</h1>
+<ul>
+    {% for grupo in grupos %}
+        <li>
+            <a href="{% url 'detalle_grupo' grupo.id %}">{{ grupo.nombre }}</a> - {{ grupo.descripcion }}
+        </li>
+    {% empty %}
+        <li>No estás en ningún grupo.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'crear_grupo' %}" class="btn btn-primary">Crear Nuevo Grupo</a>
+{% endblock %}

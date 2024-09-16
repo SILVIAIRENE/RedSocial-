@@ -1,0 +1,24 @@
+{% if usuario.perfilusuario in request.user.perfilusuario.amigos.all %}
+    <form method="post" action="{% url 'eliminar_amigo' usuario.id %}">
+        {% csrf_token %}
+        <button type="submit">Eliminar Amigo</button>
+    </form>
+{% else %}
+    {% if solicitud_existe %}
+        {% if not solicitud.aceptado %}
+            <form method="post" action="{% url 'aceptar_solicitud_amistad' solicitud.id %}">
+                {% csrf_token %}
+                <button type="submit">Aceptar Solicitud</button>
+            </form>
+            <form method="post" action="{% url 'rechazar_solicitud_amistad' solicitud.id %}">
+                {% csrf_token %}
+                <button type="submit">Rechazar Solicitud</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <form method="post" action="{% url 'enviar_solicitud_amistad' usuario.id %}">
+            {% csrf_token %}
+            <button type="submit">Enviar Solicitud de Amistad</button>
+        </form>
+    {% endif %}
+{% endif %}

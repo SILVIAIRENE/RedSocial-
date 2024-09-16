@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{{ grupo.nombre }}</h1>
+<p>{{ grupo.descripcion }}</p>
+<p>Creado por: {{ grupo.creador }}</p>
+<p>Miembros:</p>
+<ul>
+    {% for miembro in grupo.miembros.all %}
+        <li>{{ miembro }}</li>
+    {% empty %}
+        <li>No hay miembros en este grupo.</li>
+    {% endfor %}
+</ul>
+
+<!-- Botón para abrir el modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFriendsModal">
+    Añadir Amigos
+</button>
+
+<!-- Modal para añadir amigos -->
+<div class="modal fade" id="addFriendsModal" tabindex="-1" aria-labelledby="addFriendsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addFriendsModalLabel">Añadir Amigos al Grupo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'añadir_amigos_a_grupo' grupo.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="amigos">Selecciona amigos:</label>
+                <select multiple class="form-select" id="amigos" name="amigos">
+                    {% for amigo in amigos %}
+                        <option value="{{ amigo.id }}">{{ amigo }}</option>
+                    {% empty %}
+                        <option disabled>No tienes amigos para añadir.</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Añadir</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="{% url 'grupos_usuario' %}" class="btn btn-secondary">Volver a la lista de grupos</a>
+{% endblock %}

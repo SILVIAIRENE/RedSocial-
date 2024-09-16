@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Lista de Publicaciones</h2>
+    
+    <a href="{% url 'crear_publicacion' %}" class="btn btn-primary mb-3">Crear Nueva Publicación</a>
+    <ul class="list-group">
+        {% for publicacion in publicaciones %}
+        <li class="list-group-item">
+            <h5>{{ publicacion.autor.nombre_usuario }} - {{ publicacion.fecha_publicacion }}</h5>
+            <p>{{ publicacion.contenido }}</p>
+            {% if publicacion.imagen %}
+                <img src="{{ publicacion.imagen.url }}" alt="Imagen de la publicación" class="img-fluid">
+            {% endif %}
+            
+            <a href="#" class="btn btn-light btn-like" data-url="{% url 'like_publicacion' publicacion.id %}">
+                {% if user in publicacion.likes.all %}
+                Me gusta ({{ publicacion.likes.count }})
+                {% else %}
+                Dar Me gusta ({{ publicacion.likes.count }})
+                {% endif %}
+            </a>
+            
+            <h6>Comentarios:</h6>
+            <ul>
+                {% for comentario in publicacion.comentarios.all %}
+                <li>{{ comentario.autor.nombre_usuario }}: {{ comentario.contenido }}
+                </li>
+                {% empty %}
+                <li>No hay comentarios aún.</li>
+                {% endfor %}
+            </ul>
+            <form method="POST" action="{% url 'comentar_publicacion' publicacion.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" name="contenido" rows="2" placeholder="Escribe un comentario..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary btn-sm">Comentar</button>
+            </form>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No hay publicaciones aún.</li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.btn-like').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.dataset.url;
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked !== undefined) {
+                        this.textContent = data.liked ? `Me gusta (${data.count})` : `Dar Me gusta (${data.count})`;
+                    } else {
+                        console.error('Error en la respuesta:', data);
+                    }
+                })
+                .catch(error => console.error('Error en la solicitud:', error));
+            });
+        });
+    });
+    
+</script>
+{% endblock %}

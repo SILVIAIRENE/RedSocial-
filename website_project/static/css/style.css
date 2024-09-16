@@ -1,0 +1,72 @@
+
+
+/* Cambiar el color de fondo del navbar */
+.navbar {
+    background-color: #ea8735 !important; /* Cambia el color por el que prefieras */
+}
+
+/* Cambiar el color del texto en los enlaces del navbar */
+.navbar .nav-link {
+    color: #ffee03 !important; /* Cambia el color del texto */
+}
+
+/* Cambiar el color de los enlaces al pasar el ratón por encima */
+.navbar .nav-link:hover {
+    color: #ffcc00 !important; /* Cambia a un color más claro al hacer hover */
+}
+
+/* Cambiar el estilo del enlace activo */
+.navbar .nav-item.active .nav-link {
+    color: #ff5733 !important; /* Cambia el color del enlace activo */
+}
+
+/* Estilo para el enlace de la marca (logo o inicio) */
+.navbar-brand {
+    font-size: 1.5rem; /* Cambia el tamaño de la fuente */
+    font-weight: bold;
+    color: #ffcc00 !important; /* Cambia el color de la marca */
+}
+
+/* Cambiar el padding entre los enlaces */
+.navbar .nav-link {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* Si el navbar está colapsado (en dispositivos móviles) */
+.navbar-collapse {
+    justify-content: flex-end;
+}
+/* Centra el botón debajo de la imagen y añade un margen inferior */
+.btn-like {
+    display: block;
+    margin: 20px auto; /* Ajusta el margen según sea necesario */
+  }
+  
+  /* Personaliza el aspecto del botón (opcional) */
+  .btn-like {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .btn-like:hover {
+    background-color: #e0e0e0;
+  }
+  
+/* Para que todas las imágenes de las publicaciones tengan el mismo tamaño */
+img {
+    width: 100%;  /* Ajusta el ancho al 100% del contenedor */
+    max-width: 400px; /* Limita el ancho máximo de la imagen */
+    height: auto;  /* Mantén la proporción de la imagen */
+    object-fit: cover;  /* Si la imagen tiene un tamaño diferente, la recorta */
+}
+#preview {
+    width: 100%;  /* Ajusta el ancho al 100% del contenedor */
+    max-width: 400px; /* Limita el ancho máximo de la imagen */
+    height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+    object-fit: cover;  /* Ajusta la imagen dentro del contenedor */
+    margin-top: 10px;
+}

@@ -1,0 +1,5 @@
+<form method="POST" action="{% url 'comentar_publicacion' publicacion.id %}">
+    {% csrf_token %}
+    <textarea name="contenido" class="form-control" placeholder="Añadir un comentario..."></textarea>
+    <button type="submit" class="btn btn-primary mt-2">Comentar</button>
+</form>

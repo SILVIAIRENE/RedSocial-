@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Crear un nuevo grupo</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear Grupo</button>
+</form>
+<a href="{% url 'grupos_usuario' %}" class="btn btn-secondary">Volver a la lista de grupos</a>
+{% endblock %}

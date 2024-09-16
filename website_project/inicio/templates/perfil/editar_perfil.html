@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<body>
+    <div class="container mt-5">
+        <h2>Editar Perfil</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_biografia">Biografía:</label>
+                {{ form.biografia }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_foto_perfil">Foto de Perfil:</label>
+                {{ form.foto_perfil }}
+                {% if form.foto_perfil.value %}
+                    <img src="{{ form.foto_perfil.value.url }}" alt="Foto de Perfil Actual" class="img-thumbnail mt-2" style="max-width: 150px;">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_foto_portada">Foto de Portada:</label>
+                {{ form.foto_portada }}
+                {% if form.foto_portada.value %}
+                    <img src="{{ form.foto_portada.value.url }}" alt="Foto de Portada Actual" class="img-thumbnail mt-2" style="max-width: 150px;">
+                {% endif %}
+            </div>
+
+            <button type="submit" name="confirmar" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="alert alert-danger mt-3">
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+
+
+/* Cambiar el color de fondo del navbar */
+.navbar {
+    background-color: #343a40 !important; /* Cambia el color por el que prefieras */
+}
+
+/* Cambiar el color del texto en los enlaces del navbar */
+.navbar .nav-link {
+    color: #ffffff !important; /* Cambia el color del texto */
+}
+
+/* Cambiar el color de los enlaces al pasar el ratón por encima */
+.navbar .nav-link:hover {
+    color: #ffcc00 !important; /* Cambia a un color más claro al hacer hover */
+}
+
+/* Cambiar el estilo del enlace activo */
+.navbar .nav-item.active .nav-link {
+    color: #ff5733 !important; /* Cambia el color del enlace activo */
+}
+
+/* Estilo para el enlace de la marca (logo o inicio) */
+.navbar-brand {
+    font-size: 1.5rem; /* Cambia el tamaño de la fuente */
+    font-weight: bold;
+    color: #ffcc00 !important; /* Cambia el color de la marca */
+}
+
+/* Cambiar el padding entre los enlaces */
+.navbar .nav-link {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* Si el navbar está colapsado (en dispositivos móviles) */
+.navbar-collapse {
+    justify-content: flex-end;
+}

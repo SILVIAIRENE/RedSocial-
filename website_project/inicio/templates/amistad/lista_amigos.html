@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Lista de Amigos</h2>
+    <ul class="list-group">
+        {% for amigo in amigos %}
+        <li class="list-group-item">{{ amigo.nombre_usuario }}</li>
+        {% empty %}
+        <li class="list-group-item">No tienes amigos aún.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

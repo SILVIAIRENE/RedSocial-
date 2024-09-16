@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Confirmar Edición de Perfil</h2>
+    
+    <!-- Vista previa de la foto de portada -->
+    <div class="position-relative text-center mb-4">
+        {% if nueva_foto_portada %}
+            <img src="{{ nueva_foto_portada.url }}" alt="Foto de portada" class="img-fluid" style="max-width: 100%; height: auto;">
+        {% else %}
+            <img src="{% static 'default-cover.png' %}" alt="Foto de portada" class="img-fluid" style="max-width: 100%; height: auto;">
+        {% endif %}
+    </div>
+    
+    <!-- Vista previa de la foto de perfil -->
+    <div class="text-center mb-4">
+        {% if nueva_foto_perfil %}
+            <img src="{{ nueva_foto_perfil.url }}" alt="Foto de perfil" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+        {% else %}
+            <img src="{% static 'default-profile.png' %}" alt="Foto de perfil" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+        {% endif %}
+    </div>
+
+    <!-- Botón para confirmar -->
+    <form method="post" action="{% url 'editar_perfil' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit" name="confirmar" class="btn btn-primary">Confirmar Cambios</button>
+        <a href="{% url 'editar_perfil' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!-- lista_usuarios.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Lista de Usuarios</h2>
+    <a href="{% url 'crear_usuario' %}" class="btn btn-primary mb-3">Crear Usuario</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>Nombre de Usuario</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.nombres }}</td>
+                <td>{{ usuario.nombre_usuario }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

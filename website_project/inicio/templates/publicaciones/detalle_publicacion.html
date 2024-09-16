@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Detalles de la Publicación</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ publicacion.autor.nombre_usuario }} - {{ publicacion.fecha_publicacion }}</h5>
+                    <p class="card-text">{{ publicacion.contenido }}</p>
+                    {% if publicacion.imagen %}
+                        <img src="{{ publicacion.imagen.url }}" alt="Imagen de la publicación" class="img-fluid mb-3">
+                    {% endif %}
+
+                    <!-- Mapa de ubicación -->
+                    {% if publicacion.map_url %}
+                        <h3>Ubicación:</h3>
+                        <iframe
+                            src="{{ publicacion.map_url }}"
+                            width="600"
+                            height="450"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <form method="POST" action="{% url 'like_publicacion' publicacion.id %}">
+                            {% csrf_token %}
+                            <a href="#" class="btn btn-light btn-like" data-url="{% url 'like_publicacion' publicacion.id %}">
+                                {% if user in publicacion.likes.all %}
+                                Me gusta ({{ publicacion.likes.count }})
+                                {% else %}
+                                Dar Me gusta ({{ publicacion.likes.count }})
+                                {% endif %}
+                            </a>
+                        </form>
+                    </div>
+
+                    <h6>Comentarios:</h6>
+                    <ul class="list-group mb-3">
+                        {% for comentario in comentarios %}
+                            <li class="list-group-item">
+                                <strong>{{ comentario.autor.nombre_usuario }}</strong> - {{ comentario.fecha_comentario }}
+                                <p>{{ comentario.contenido }}</p>
+                                {% if comentario.autor == user %}
+                                    <a href="{% url 'editar_comentario' comentario.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{% url 'eliminar_comentario' comentario.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No hay comentarios aún.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <form method="POST" action="{% url 'comentar_publicacion' publicacion.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" name="contenido" rows="2" placeholder="Escribe un comentario..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Comentar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Apartado para perfil del autor -->
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Perfil del Autor</h5>
+                    {% if publicacion.autor.perfil.foto_perfil %}
+                        <img src="{{ publicacion.autor.perfil.foto_perfil.url }}" alt="Foto de perfil" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                    {% else %}
+                        <img src="{% static 'default_profile_picture.png' %}" alt="Foto de perfil" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                    {% endif %}
+                    <h6 class="card-subtitle mb-2 text-muted">{{ publicacion.autor.nombre_usuario }}</h6>
+                    <a href="{% url 'ver_perfil' usuario_id=publicacion.autor.id %}" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.btn-like').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.dataset.url;
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked !== undefined) {
+                        this.textContent = data.liked ? `Me gusta (${data.count})` : `Dar Me gusta (${data.count})`;
+                    } else {
+                        console.error('Error en la respuesta:', data);
+                    }
+                })
+                .catch(error => console.error('Error en la solicitud:', error));
+            });
+        });
+    });
+    
+</script>
+{% endblock %}
